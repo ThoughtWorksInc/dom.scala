@@ -4,7 +4,7 @@ organization := "com.thoughtworks.binding.experimental"
 
 name := "dom"
 
-crossScalaVersions in ThisBuild := Seq("2.10.8", "2.12.8", "2.11.12")
+crossScalaVersions in ThisBuild := Seq("2.10.7", "2.12.8", "2.11.12")
 
 description := "Reactive web framework for Scala.js."
 

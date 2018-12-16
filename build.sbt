@@ -1,6 +1,8 @@
 enablePlugins(ScalaJSPlugin)
 
-organization := "com.thoughtworks.binding.experimental"
+organization in ThisBuild := "com.thoughtworks.binding.experimental"
+
+sonatypeProfileName := "com.thoughtworks.binding"
 
 name := "dom"
 

@@ -70,7 +70,7 @@ object dom {
 
   private[dom] trait LowPriorityToBindingSeq0 extends Poly1 {
 
-    @inline implicit def tupleToBindingSeq[Tuple <: Product with Serializable, MappedTuple, Children, Child](
+    implicit def tupleToBindingSeq[Tuple <: Product with Serializable, MappedTuple, Children, Child](
         implicit
         mapper: Mapper.Aux[Tuple, toBindingSeq.type, MappedTuple],
         toArray: ToTraversable.Aux[MappedTuple, Array, Children],
@@ -78,10 +78,10 @@ object dom {
       new BindingSeq.FlatMap(Constants(toArray(mapper(tuple)): _*), asBindingSeq)
     }
 
-    @inline implicit def nodeToBindingSeq[Child <: Node]: Case.Aux[Child, BindingSeq[Child]] =
+    implicit def nodeToBindingSeq[Child <: Node]: Case.Aux[Child, BindingSeq[Child]] =
       at[Child](Constants(_))
 
-    @inline implicit def bindingToBindingSeq[BindingSubtype[x] <: Binding[x], Children, Child](
+    implicit def bindingToBindingSeq[BindingSubtype[x] <: Binding[x], Children, Child](
         implicit childrenToBindingSeq: Case.Aux[Children, BindingSeq[Child]]
     ): Case.Aux[BindingSubtype[Children], BindingSeq[Child]] = at[BindingSubtype[Children]] { bindingChildren =>
       new BindingSeq.FlatMap(SingletonBindingSeq(bindingChildren), { x: Children =>
@@ -89,28 +89,28 @@ object dom {
       })
     }
 
-    @inline implicit def bindingSeqToBindingSeq[BindingSeqSubtype[x] <: BindingSeq[x], Child]
+    implicit def bindingSeqToBindingSeq[BindingSeqSubtype[x] <: BindingSeq[x], Child]
       : Case.Aux[BindingSeq[Child], BindingSeq[Child]] = {
       at[BindingSeq[Child]](identity)
     }
 
-    @inline implicit def scalaSeqToBindingSeq[ImmutableSeq[x] <: collection.immutable.Seq[x], Child]
+    implicit def scalaSeqToBindingSeq[ImmutableSeq[x] <: collection.immutable.Seq[x], Child]
       : Case.Aux[ImmutableSeq[Child], BindingSeq[Child]] = {
       at[ImmutableSeq[Child]](Constants(_: _*))
     }
 
-    @inline implicit def arrayToBindingSeq[Child]: Case.Aux[Array[Child], BindingSeq[Child]] = {
+    implicit def arrayToBindingSeq[Child]: Case.Aux[Array[Child], BindingSeq[Child]] = {
       at[Array[Child]](Constants(_: _*))
     }
 
-    @inline implicit def optionToBindingSeq[OptionSubtype[x] <: Option[x], Child]
+    implicit def optionToBindingSeq[OptionSubtype[x] <: Option[x], Child]
       : Case.Aux[OptionSubtype[Child], BindingSeq[Child]] = {
       at[OptionSubtype[Child]] { o =>
         Constants(o.toSeq: _*)
       }
     }
 
-    @inline implicit def stringToBindingSeq: Case.Aux[String, BindingSeq[Text]] =
+    implicit def stringToBindingSeq: Case.Aux[String, BindingSeq[Text]] =
       at[String] { s =>
         Constants(document.createTextNode(s))
       }
@@ -121,24 +121,24 @@ object dom {
   object toBindingSeq extends LowPriorityToBindingSeq0 {
 
     /** Returns an optimized [[Case]] that behaves the same as `bindingToBindingSeq(bindingSeqToBindingSeq)` */
-    @inline implicit def bindingBindingSeqToBindingSeq[Child]: Case.Aux[Binding[BindingSeq[Child]], BindingSeq[Child]] =
+    implicit def bindingBindingSeqToBindingSeq[Child]: Case.Aux[Binding[BindingSeq[Child]], BindingSeq[Child]] =
       at[Binding[BindingSeq[Child]]] { bindingBindingSeq =>
         new BindingSeq.FlatMap(SingletonBindingSeq(bindingBindingSeq), identity[BindingSeq[Child]])
       }
 
     /** Returns an optimized [[Case]] that behaves the same as `bindingToBindingSeq(nodeToBindingSeq)` */
-    @inline implicit def bindingNodeToBindingSeq[Child <: Node]: Case.Aux[Binding[Child], BindingSeq[Child]] =
+    implicit def bindingNodeToBindingSeq[Child <: Node]: Case.Aux[Binding[Child], BindingSeq[Child]] =
       at[Binding[Child]](SingletonBindingSeq(_))
 
     /** Returns an optimized [[Case]] that behaves the same as `bindingToBindingSeq(stringToBindingSeq)` */
-    @inline implicit def bindingStringToBindingSeq: Case.Aux[Binding[String], BindingSeq[Text]] =
+    implicit def bindingStringToBindingSeq: Case.Aux[Binding[String], BindingSeq[Text]] =
       at[Binding[String]] { bindingString =>
         SingletonBindingSeq(Binding(document.createTextNode(bindingString.bind)))
       }
 
   }
+
   private[dom] sealed trait LowPriorityMount0 {
-    @inline
     implicit final def mountNodeSeq[Parent <: Node, Component, NodeSeq](
         implicit renderCase: toBindingSeq.Case.Aux[Component, NodeSeq],
         asNodeSeq: NodeSeq <:< BindingSeq[Node]
@@ -152,7 +152,6 @@ object dom {
   }
 
   object Mount extends LowPriorityMount0 {
-    @inline
     implicit final def mountBindingSeqNode[Parent <: Node, Child <: Node]: Mount[Parent, BindingSeq[Child]] =
       new Mount[Parent, BindingSeq[Child]] {
         def mount(parent: Parent, children: BindingSeq[Child]): NodeSeqMountPoint = {
@@ -160,7 +159,6 @@ object dom {
         }
       }
 
-    @inline
     implicit final def mountBindingNode[Parent <: Node, Child <: Node]: Mount[Parent, Binding[Child]] =
       new Mount[Parent, Binding[Child]] {
         def mount(parent: Parent, child: Binding[Child]): NodeMountPoint = {
@@ -204,7 +202,7 @@ object dom {
       }
     }
 
-    final class NodeSeqMountPoint(parent: Node, childrenBinding: BindingSeq[Node])
+    final class NodeSeqMountPoint private[dom] (parent: Node, childrenBinding: BindingSeq[Node])
         extends MultiMountPoint[Node](childrenBinding) {
 
       override protected def set(children: Seq[Node]): Unit = {

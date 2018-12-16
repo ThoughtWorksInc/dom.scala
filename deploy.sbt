@@ -2,13 +2,14 @@ enablePlugins(Travis)
 
 enablePlugins(SonatypeRelease)
 
-optimization := {
+
+scalacOptions ++= {
   import scala.math.Ordering.Implicits._
   val versionNumers = VersionNumber(scalaVersion.value).numbers
-  if (versionNumers < Seq(2L, 11L)) {
-    false
+  if (versionNumers >= Seq(2L, 11L) && versionNumers < Seq(2L, 12L)) {
+    Seq("-Ybackend:GenBCode")
   } else {
-    true
+    Seq.empty
   }
 }
 

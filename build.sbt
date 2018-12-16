@@ -10,6 +10,8 @@ description := "Reactive web framework for Scala.js."
 
 libraryDependencies += "com.thoughtworks.binding" %%% "dom" % "11.6.0"
 
+libraryDependencies += "com.thoughtworks.sde" %%% "core" % "3.3.1"
+
 libraryDependencies += "com.thoughtworks.extractor" %% "extractor" % "1.2.0"
 
 libraryDependencies += "com.lihaoyi" %%% "scalatags" % "0.6.7"

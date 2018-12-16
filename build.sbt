@@ -1,10 +1,14 @@
 enablePlugins(ScalaJSPlugin)
 
-organization := "com.thoughtworks.binding"
+organization := "com.thoughtworks.binding.experimental"
 
 name := "dom"
 
+crossScalaVersions in ThisBuild := Seq("2.10.8", "2.12.8", "2.11.12")
+
 description := "Reactive web framework for Scala.js."
+
+libraryDependencies += "com.thoughtworks.binding" %%% "dom" % "11.5.0"
 
 libraryDependencies += "com.thoughtworks.extractor" %% "extractor" % "1.2.0"
 

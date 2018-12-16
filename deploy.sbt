@@ -2,6 +2,16 @@ enablePlugins(Travis)
 
 enablePlugins(SonatypeRelease)
 
+optimization := {
+  import scala.math.Ordering.Implicits._
+  val versionNumers = VersionNumber(scalaVersion.value).numbers
+  if (versionNumers < Seq(2L, 11L)) {
+    false
+  } else {
+    true
+  }
+}
+
 lazy val secret = project.settings(publishArtifact := false).in {
   val secretDirectory = file(sourcecode.File()).getParentFile / "secret"
   sys.env.get("GITHUB_PERSONAL_ACCESS_TOKEN").foreach { token =>

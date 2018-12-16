@@ -23,6 +23,7 @@ SOFTWARE.
  */
 
 package com.thoughtworks.binding
+package experimental
 
 import Binding.{Constant, Var, Vars}
 import org.scalajs.dom.document

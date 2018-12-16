@@ -1,7 +1,9 @@
 package com.thoughtworks.binding
+package experimental
+
 import com.thoughtworks.binding.Binding.{BindingSeq, MultiMountPoint}
-import com.thoughtworks.binding.dom.Mountable
-import com.thoughtworks.binding.dom.Runtime.TagsAndTags2
+import dom.Mountable
+import dom.Runtime.TagsAndTags2
 import org.scalajs.dom.html.HR
 import org.scalatest.{FreeSpec, Inside, Matchers}
 

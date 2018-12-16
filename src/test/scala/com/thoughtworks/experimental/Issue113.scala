@@ -1,4 +1,6 @@
 package com.thoughtworks.binding
+package experimental
+
 import org.scalajs.dom.raw._
 import org.scalajs.dom.{DragEvent, Event}
 import org.scalatest.{FreeSpec, Matchers}

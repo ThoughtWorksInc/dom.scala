@@ -1,4 +1,6 @@
 package com.thoughtworks.binding
+package experimental
+
 import org.scalatest.{FreeSpec, Matchers}
 
 /**

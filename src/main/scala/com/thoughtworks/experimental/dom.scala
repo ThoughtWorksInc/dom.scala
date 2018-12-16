@@ -23,6 +23,7 @@ SOFTWARE.
  */
 
 package com.thoughtworks.binding
+package experimental
 
 import Binding.{BindingSeq, Constants, MultiMountPoint, SingleMountPoint, SingletonBindingSeq}
 import dom.Runtime.{NodeMountPoint, NodeSeqMountPoint}
@@ -626,7 +627,7 @@ object dom {
                 valDefs -> atPos(child.pos) {
                   q"""
                     _root_.com.thoughtworks.binding.Binding.apply {
-                      _root_.com.thoughtworks.binding.dom.Runtime.domBindingSeq($transformedChild)
+                      _root_.com.thoughtworks.binding.experimental.dom.Runtime.domBindingSeq($transformedChild)
                     }
                   """
                 }
@@ -673,7 +674,7 @@ object dom {
                         _root_.com.thoughtworks.binding.Binding.apply[_root_.scala.Unit]({
                           val $newValueName = ${transform(value)}
                           @_root_.scala.inline def $assignName() = {
-                            if (_root_.com.thoughtworks.binding.dom.Runtime.notEqual($attributeAccess, $newValueName)) {
+                            if (_root_.com.thoughtworks.binding.experimental.dom.Runtime.notEqual($attributeAccess, $newValueName)) {
                               $attributeAccess = $newValueName
                             }
                           }
@@ -695,7 +696,7 @@ object dom {
                     _root_.com.thoughtworks.binding.Binding,
                     _root_.scala.Unit
                   ](
-                    _root_.com.thoughtworks.binding.dom.Runtime.mount(
+                    _root_.com.thoughtworks.binding.experimental.dom.Runtime.mount(
                       $elementName,
                       $transformedBuffer
                     )
@@ -704,7 +705,7 @@ object dom {
                 })
             }
 
-            val tagAccess = propertyAccess(tag, q"_root_.com.thoughtworks.binding.dom.Runtime.TagsAndTags2")
+            val tagAccess = propertyAccess(tag, q"_root_.com.thoughtworks.binding.experimental.dom.Runtime.TagsAndTags2")
 
             val elementDef = q"val $elementName = $tagAccess.render"
             idOption match {
@@ -787,7 +788,7 @@ object dom {
 
       def autoImportAndTransform(body: Tree) = {
         q"""_root_.com.thoughtworks.binding.Binding.apply {
-          import _root_.com.thoughtworks.binding.dom.AutoImports.{
+          import _root_.com.thoughtworks.binding.experimental.dom.AutoImports.{
             != => _,
             ## => _,
             == => _,

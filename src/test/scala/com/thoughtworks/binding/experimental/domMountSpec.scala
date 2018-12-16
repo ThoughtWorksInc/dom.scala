@@ -3,7 +3,7 @@ package experimental
 
 import com.thoughtworks.binding.Binding.{BindingSeq, Constants, MultiMountPoint}
 import com.thoughtworks.binding.experimental.dom.Runtime.TagsAndTags2
-import com.thoughtworks.binding.experimental.dom.{Mount, toNodes}
+import com.thoughtworks.binding.experimental.dom.{Mount, toBindingSeq}
 import org.scalajs.dom.html.HR
 import org.scalatest.{FreeSpec, Inside, Matchers}
 
@@ -17,12 +17,12 @@ final class domMountSpec extends FreeSpec with Matchers with Inside {
 
   "Mount JavaScript WrappedArray" in {
     implicit def mountJsArray[Element, Children, Child](
-        implicit toNodesCase: toNodes.Case.Aux[Children, BindingSeq[Child]],
+        implicit toBindingSeqCase: toBindingSeq.Case.Aux[Children, BindingSeq[Child]],
         asSeq: Seq[Child] <:< Seq[Element]): Mount[js.WrappedArray[Element], Children] =
       new Mount[js.WrappedArray[Element], Children] {
         def mount(parent: js.WrappedArray[Element], children: Children): Binding[Unit] = {
           parent.toString()
-          new MultiMountPoint[Child](toNodesCase(children)) {
+          new MultiMountPoint[Child](toBindingSeqCase(children)) {
 
             protected def set(children: Seq[Child]): Unit = {
               parent.clear()
@@ -35,8 +35,8 @@ final class domMountSpec extends FreeSpec with Matchers with Inside {
         }
       }
 
-    implicit def anyToNodes[Element]: toNodes.Case.Aux[js.WrappedArray[Element], BindingSeq[js.WrappedArray[Element]]] =
-      toNodes.at[js.WrappedArray[Element]](Constants(_))
+    implicit def anyToBindingSeq[Element]: toBindingSeq.Case.Aux[js.WrappedArray[Element], BindingSeq[js.WrappedArray[Element]]] =
+      toBindingSeq.at[js.WrappedArray[Element]](Constants(_))
 
     var arrayCount = 0
     implicit final class ArrayTagOps(tagsAndTags2: TagsAndTags2.type) {

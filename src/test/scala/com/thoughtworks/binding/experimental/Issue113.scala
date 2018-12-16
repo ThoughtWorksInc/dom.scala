@@ -1,6 +1,8 @@
 package com.thoughtworks.binding
 package experimental
 
+import com.thoughtworks.binding.experimental.dom.Mount
+import org.scalajs.dom.html.Span
 import org.scalajs.dom.raw._
 import org.scalajs.dom.{DragEvent, Event}
 import org.scalatest.{FreeSpec, Matchers}
@@ -9,12 +11,16 @@ class Issue113 extends FreeSpec with Matchers {
   "name clash should be avoided" in {
     val dialog = dialogUI("id")
     dialog.watch()
-    dialog.get.outerHTML should be ("""<aside id="id">
+    dialog.get.outerHTML should be("""<aside id="id">
     <div>
       <fieldset>
       </fieldset>
     </div>
   </aside>""")
+  }
+
+  def x = {
+    implicitly[Mount[Span, Binding[String]]]
   }
 
   @dom
@@ -41,6 +47,5 @@ class Issue113 extends FreeSpec with Matchers {
       </fieldset>
     </div>
   </aside>
-
 
 }

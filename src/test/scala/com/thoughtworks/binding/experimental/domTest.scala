@@ -293,10 +293,10 @@ final class domTest extends FreeSpec with Matchers {
     val div = document.createElement("div")
     dom.render(div, input)
     assert(v.value == "Initial value")
-    assert(input.get.get(0).asInstanceOf[Input].value == "Initial value")
+    assert(input.get._1.get.value == "Initial value")
     div.firstChild.asInstanceOf[Input].onclick(null)
     assert(v.value == "INPUT and Label Text")
-    assert(input.get.get(0).asInstanceOf[Input].value == "INPUT and Label Text")
+    assert(input.get._1.get.value == "INPUT and Label Text")
   }
 
   "id in Binding" in {
@@ -317,7 +317,7 @@ final class domTest extends FreeSpec with Matchers {
 
   "Seq in DOM" in {
     @dom def myUl = {
-      <ul>{Seq(<li>data1</li>, <li>data2</li>)}</ul>
+      <ul>{List(<li>data1</li>, <li>data2</li>)}</ul>
     }
 
     val div = document.createElement("div")
@@ -416,10 +416,10 @@ final class domTest extends FreeSpec with Matchers {
     val div = document.createElement("div")
     dom.render(div, input)
     assert(v.value == "Initial value")
-    assert(input.get.get(0).asInstanceOf[Input].value == "Initial value")
+    assert(input.get._1.get.value == "Initial value")
     div.firstChild.asInstanceOf[Input].onclick(null)
     assert(v.value == "INPUT and Label Text")
-    assert(input.get.get(0).asInstanceOf[Input].value == "INPUT and Label Text")
+    assert(input.get._1.get.value == "INPUT and Label Text")
   }
 
   "local-id in Binding" in {

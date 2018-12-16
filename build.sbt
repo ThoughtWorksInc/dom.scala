@@ -8,7 +8,7 @@ crossScalaVersions in ThisBuild := Seq("2.10.7", "2.12.8", "2.11.12")
 
 description := "Reactive web framework for Scala.js."
 
-libraryDependencies += "com.thoughtworks.binding" %%% "dom" % "11.5.0"
+libraryDependencies += "com.thoughtworks.binding" %%% "dom" % "11.6.0"
 
 libraryDependencies += "com.thoughtworks.extractor" %% "extractor" % "1.2.0"
 
@@ -17,6 +17,8 @@ libraryDependencies += "com.lihaoyi" %%% "scalatags" % "0.6.7"
 libraryDependencies += "org.scala-js" %%% "scalajs-dom" % "0.9.5"
 
 libraryDependencies += "org.scalatest" %%% "scalatest" % "3.0.5" % Test
+
+libraryDependencies += "com.chuusai" %%% "shapeless" % "2.3.3"
 
 libraryDependencies += "org.typelevel" %% "macro-compat" % "1.1.1"
 

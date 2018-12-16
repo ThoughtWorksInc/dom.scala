@@ -94,28 +94,28 @@ object dom {
     implicit def nodeToNodes[Child <: Node]: Case.Aux[Child, BindingSeq[Child]] =
       at[Child](Constants(_))
 
-    implicit def bindingToNodes[Children, Child](
+    implicit def bindingToNodes[BindingSubtype[x] <: Binding[x], Children, Child](
         implicit childrenToNodes: Case.Aux[Children, BindingSeq[Child]]
-    ): Case.Aux[Binding[Children], BindingSeq[Child]] = at[Binding[Children]] { bindingChildren =>
+    ): Case.Aux[BindingSubtype[Children], BindingSeq[Child]] = at[BindingSubtype[Children]] { bindingChildren =>
       new BindingSeq.FlatMap(SingletonBindingSeq(bindingChildren), { x: Children =>
         childrenToNodes(x)
       })
     }
 
-    implicit def bindingSeqToNodes[Child]: Case.Aux[BindingSeq[Child], BindingSeq[Child]] = {
+    implicit def bindingSeqToNodes[BindingSeqSubtype[x] <: BindingSeq[x], Child]: Case.Aux[BindingSeq[Child], BindingSeq[Child]] = {
       at[BindingSeq[Child]](identity)
     }
 
-    implicit def scalaSeqToNodes[S[x] <: collection.immutable.Seq[x], Child]: Case.Aux[S[Child], BindingSeq[Child]] = {
-      at[S[Child]](Constants(_: _*))
+    implicit def scalaSeqToNodes[ImmutableSeq[x] <: collection.immutable.Seq[x], Child]: Case.Aux[ImmutableSeq[Child], BindingSeq[Child]] = {
+      at[ImmutableSeq[Child]](Constants(_: _*))
     }
 
     implicit def arrayToNodes[Child]: Case.Aux[Array[Child], BindingSeq[Child]] = {
       at[Array[Child]](Constants(_: _*))
     }
 
-    implicit def optionToNodes[O[x] <: Option[x], Child]: Case.Aux[O[Child], BindingSeq[Child]] = {
-      at[O[Child]] { o =>
+    implicit def optionToNodes[OptionSubtype[x] <: Option[x], Child]: Case.Aux[OptionSubtype[Child], BindingSeq[Child]] = {
+      at[OptionSubtype[Child]] { o =>
         Constants(o.toSeq: _*)
       }
     }

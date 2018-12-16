@@ -1,7 +1,7 @@
 package com.thoughtworks.binding
 package experimental
 
-import com.thoughtworks.binding.Binding.{BindingSeq, Constant, Constants, MultiMountPoint}
+import com.thoughtworks.binding.Binding.{BindingSeq, Constants, MultiMountPoint}
 import com.thoughtworks.binding.experimental.dom.Runtime.TagsAndTags2
 import com.thoughtworks.binding.experimental.dom.{Mount, toNodes}
 import org.scalajs.dom.html.HR
